@@ -1,9 +1,11 @@
 package cc.xpbootcamp.warmup.fibonacci;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class FibonacciTest {
 
@@ -27,5 +29,10 @@ class FibonacciTest {
     @MethodSource("generateValue")
     public void should_return_correct_value_when_calculate_given_specific_position(int in, long expect) {
         assertEquals(expect, new Fibonacci().calculate(in));
+    }
+
+    @Test
+    public void should_throw_exception_when_calculate_given_position_is_negative() {
+        assertThrows(RuntimeException.class, () -> new Fibonacci().calculate(-1));
     }
 }

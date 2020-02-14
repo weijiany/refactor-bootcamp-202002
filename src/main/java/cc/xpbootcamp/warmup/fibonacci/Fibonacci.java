@@ -13,18 +13,26 @@ public class Fibonacci {
     }
 
     public long calculate(long in) {
+        checkInputIsValid(in);
+
         if (cache.containsKey(in))
             return cache.get(in);
 
-        if (in == 1 || in == 2)
-            return 1;
-
-        long v1 = calculate(in - 1);
-        cache.putIfAbsent(in - 1, v1);
-        long v2 = calculate(in - 2);
-        cache.putIfAbsent(in - 2, v2);
+        long v1 = getValue(in, 1);
+        long v2 = getValue(in, 2);
 
         return v1 + v2;
+    }
+
+    private long getValue(long in, int offset) {
+        long value = calculate(in - offset);
+        cache.putIfAbsent(in - offset, value);
+        return value;
+    }
+
+    private void checkInputIsValid(long in) {
+        if (in < 1)
+            throw new RuntimeException();
     }
 
     private void initCache() {
