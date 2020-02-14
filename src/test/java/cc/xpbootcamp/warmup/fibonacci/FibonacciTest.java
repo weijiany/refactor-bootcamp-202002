@@ -18,13 +18,14 @@ class FibonacciTest {
                 {7, 13},
                 {8, 21},
                 {9, 34},
-                {10, 55}
+                {10, 55},
+                {50, 12586269025L}
         };
     }
 
     @ParameterizedTest
     @MethodSource("generateValue")
-    public void should_return_correct_value_when_calculate_given_specific_position(int in, int expect) {
+    public void should_return_correct_value_when_calculate_given_specific_position(int in, long expect) {
         assertEquals(expect, new Fibonacci().calculate(in));
     }
 }
