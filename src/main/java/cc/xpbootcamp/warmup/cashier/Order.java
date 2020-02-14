@@ -1,11 +1,12 @@
 package cc.xpbootcamp.warmup.cashier;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Order {
-    String cName;
-    String addr;
-    List<LineItem> lineItemList;
+    private String cName;
+    private String addr;
+    private List<LineItem> lineItemList;
 
     public Order(String cName, String addr, List<LineItem> lineItemList) {
         this.cName = cName;
@@ -13,15 +14,26 @@ public class Order {
         this.lineItemList = lineItemList;
     }
 
-    public String getCustomerName() {
-        return cName;
+    public String print() {
+        return cName +
+                addr +
+                lineItemList
+                        .stream()
+                        .map(LineItem::print)
+                        .collect(Collectors.joining());
     }
 
-    public String getCustomerAddress() {
-        return addr;
+    public double tot() {
+        return lineItemList
+                .stream()
+                .mapToDouble(LineItem::totalAmountWithSale)
+                .sum();
     }
 
-    public List<LineItem> getLineItems() {
-        return lineItemList;
+    public double totSalesTx() {
+        return lineItemList
+                .stream()
+                .mapToDouble(LineItem::salesTax)
+                .sum();
     }
 }

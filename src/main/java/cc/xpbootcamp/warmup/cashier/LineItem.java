@@ -6,25 +6,31 @@ public class LineItem {
 	private int qty;
 
 	public LineItem(String desc, double price, int qty) {
-		super();
 		this.desc = desc;
 		this.price = price;
 		this.qty = qty;
 	}
 
-	public String getDescription() {
-		return desc;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public int getQuantity() {
-		return qty;
-	}
-
-    double totalAmount() {
+	double totalAmount() {
         return price * qty;
     }
+
+	public double totalAmountWithSale() {
+		return totalAmount() + salesTax();
+	}
+
+	public double salesTax() {
+		return totalAmount() * .10;
+	}
+
+	public String print() {
+		return desc +
+				'\t' +
+				price +
+				'\t' +
+				qty +
+				'\t' +
+				price * qty +
+				'\n';
+	}
 }
