@@ -10,7 +10,8 @@ class FibonacciTest {
     private static Object[][] generateValue() {
         return new Object[][] {
                 {1, 1},
-                {2, 1}
+                {2, 1},
+                {3, 2}
         };
     }
 
