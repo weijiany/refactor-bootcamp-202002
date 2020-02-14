@@ -10,4 +10,9 @@ class FibonacciTest {
     public void should_return_1_when_calculate_given_position_is_1() {
         assertEquals(1, new Fibonacci().calculate(1));
     }
+
+    @Test
+    public void should_return_1_when_calculate_given_position_is_2() {
+        assertEquals(1, new Fibonacci().calculate(2));
+    }
 }
