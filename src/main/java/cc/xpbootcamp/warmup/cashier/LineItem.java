@@ -11,26 +11,26 @@ public class LineItem {
 		this.qty = qty;
 	}
 
-	double totalAmount() {
-        return price * qty;
+	double totalAmount(double rebate) {
+        return rebate * price * qty;
     }
 
-	public double totalAmountWithSale() {
-		return totalAmount() + salesTax();
+	public double totalAmountWithSale(double rebate) {
+		return totalAmount(rebate) + salesTax(rebate);
 	}
 
-	public double salesTax() {
-		return totalAmount() * .10;
+	public double salesTax(double rebate) {
+		return totalAmount(rebate) * .10;
 	}
 
-	public String print() {
+	public String print(double rebate) {
 		return desc +
 				'\t' +
-				price +
+				price * rebate +
 				'\t' +
 				qty +
 				'\t' +
-				price * qty +
+				totalAmount(rebate) +
 				'\n';
 	}
 }
