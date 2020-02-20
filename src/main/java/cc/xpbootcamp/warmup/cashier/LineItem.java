@@ -1,36 +1,28 @@
 package cc.xpbootcamp.warmup.cashier;
 
+import java.math.BigDecimal;
+
 public class LineItem {
 	private String desc;
-	private double price;
+	private BigDecimal price;
 	private int qty;
 
 	public LineItem(String desc, double price, int qty) {
 		this.desc = desc;
-		this.price = price;
+		this.price = BigDecimal.valueOf(price);
 		this.qty = qty;
 	}
 
-	double totalAmount(double rebate) {
-        return rebate * price * qty;
+	BigDecimal totalAmount() {
+        return price.multiply(BigDecimal.valueOf(qty));
     }
 
-	public double totalAmountWithSale(double rebate) {
-		return totalAmount(rebate) + salesTax(rebate);
-	}
-
-	public double salesTax(double rebate) {
-		return totalAmount(rebate) * .10;
-	}
-
-	public String print(double rebate) {
+	public String print() {
 		return desc +
-				'\t' +
-				price * rebate +
-				'\t' +
-				qty +
-				'\t' +
-				totalAmount(rebate) +
+				", " +
+				price + " * " + qty +
+				", " +
+				FormatHelper.formatDecimal(totalAmount()) +
 				'\n';
 	}
 }

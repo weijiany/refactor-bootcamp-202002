@@ -11,33 +11,23 @@ import static org.hamcrest.Matchers.containsString;
 class OrderReceiptTest {
 
     @Test
-    void shouldPrintCustomerInformationOnOrder() {
-        Order order = new Order("Mr X", "Chicago, 60601", new ArrayList<>(), StringConstants.NON_WEDNESDAY);
-        OrderReceipt receipt = new OrderReceipt(order);
-
-        String output = receipt.printReceipt();
-
-
-        assertThat(output, containsString("Mr X"));
-        assertThat(output, containsString("Chicago, 60601"));
-    }
-
-    @Test
     public void shouldPrintLineItemAndSalesTaxInformation() {
         List<LineItem> lineItems = new ArrayList<LineItem>() {{
             add(new LineItem("milk", 10.0, 2));
             add(new LineItem("biscuits", 5.0, 5));
             add(new LineItem("chocolate", 20.0, 1));
         }};
-        OrderReceipt receipt = new OrderReceipt(new Order(null, null, lineItems, StringConstants.NON_WEDNESDAY));
+        OrderReceipt receipt = new OrderReceipt(new Order(lineItems, Constants.NON_WEDNESDAY));
 
         String output = receipt.printReceipt();
 
-        assertThat(output, containsString("milk\t10.0\t2\t20.0\n"));
-        assertThat(output, containsString("biscuits\t5.0\t5\t25.0\n"));
-        assertThat(output, containsString("chocolate\t20.0\t1\t20.0\n"));
-        assertThat(output, containsString("Sales Tax\t6.5"));
-        assertThat(output, containsString("Total Amount\t71.5"));
+        assertThat(output, containsString("===== 老王超市，值得信赖 ======"));
+        assertThat(output, containsString("2020年02月18日, 星期二"));
+        assertThat(output, containsString("milk, 10.0 * 2, 20.0"));
+        assertThat(output, containsString("biscuits, 5.0 * 5, 25.0"));
+        assertThat(output, containsString("chocolate, 20.0 * 1, 20.0"));
+        assertThat(output, containsString("税额:\t6.50"));
+        assertThat(output, containsString("总价:\t71.50"));
     }
 
     @Test
@@ -47,14 +37,17 @@ class OrderReceiptTest {
             add(new LineItem("biscuits", 5.0, 5));
             add(new LineItem("chocolate", 20.0, 1));
         }};
-        OrderReceipt receipt = new OrderReceipt(new Order(null, null, lineItems, StringConstants.WEDNESDAY));
+        OrderReceipt receipt = new OrderReceipt(new Order(lineItems, Constants.WEDNESDAY));
 
         String output = receipt.printReceipt();
 
-        assertThat(output, containsString("milk\t9.8\t2\t19.6\n"));
-        assertThat(output, containsString("biscuits\t4.9\t5\t24.5\n"));
-        assertThat(output, containsString("chocolate\t19.6\t1\t19.6\n"));
-        assertThat(output, containsString("Sales Tax\t6.37"));
-        assertThat(output, containsString("Total Amount\t70.07"));
+        assertThat(output, containsString("===== 老王超市，值得信赖 ======"));
+        assertThat(output, containsString("2020年02月19日, 星期三"));
+        assertThat(output, containsString("milk, 10.0 * 2, 20.0"));
+        assertThat(output, containsString("biscuits, 5.0 * 5, 25.0"));
+        assertThat(output, containsString("chocolate, 20.0 * 1, 20.0"));
+        assertThat(output, containsString("税额:\t6.37"));
+        assertThat(output, containsString("折扣:\t1.27"));
+        assertThat(output, containsString("总价:\t70.07"));
     }
 }

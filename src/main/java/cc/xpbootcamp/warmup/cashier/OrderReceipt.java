@@ -1,5 +1,7 @@
 package cc.xpbootcamp.warmup.cashier;
 
+import java.math.BigDecimal;
+
 /**
  * OrderReceipt prints the details of order including customer name, address, description, quantity,
  * price and amount. It also calculates the sales tax @ 10% and prints as part
@@ -15,9 +17,19 @@ public class OrderReceipt {
     }
 
     public String printReceipt() {
-        return "======Printing Orders======\n" +
-                order.print() +
-                "Sales Tax" + '\t' + order.totSalesTx() +
-                "Total Amount" + '\t' + order.tot();
+        return  "===== 老王超市，值得信赖 ======\n\n" +
+                order.showDate() + "\n\n" +
+                order.showItems() + "\n" +
+                "-----------------------------------\n" +
+                getFooter();
+
     }
+
+    private String getFooter() {
+        BigDecimal discount = order.showDiscountCost();
+        return "税额:\t" + order.totalSalesTax() + "\n" +
+                (discount.equals(BigDecimal.ZERO) ? "" : "折扣:\t" + FormatHelper.formatDecimal(discount) + "\n") +
+                "总价:\t" + FormatHelper.formatDecimal(order.totalWithSalesTax());
+    }
+
 }

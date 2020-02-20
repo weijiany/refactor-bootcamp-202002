@@ -1,50 +1,61 @@
 package cc.xpbootcamp.warmup.cashier;
 
+import java.math.BigDecimal;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Order {
-    private String cName;
-    private String addr;
     private List<LineItem> lineItemList;
-    private double rebate;
+    LocalDate date;
+    private BigDecimal disCount;
 
-    public Order(String cName, String addr, List<LineItem> lineItemList, LocalDate date) {
-        this.cName = cName;
-        this.addr = addr;
+    public Order(List<LineItem> lineItemList, LocalDate date) {
         this.lineItemList = lineItemList;
-        rebate = getRebate(date);
+        this.date = date;
+        disCount = getDiscount(date);
     }
 
-    public String print() {
-        return cName +
-                addr +
-                lineItemList
+    public String showItems() {
+        return lineItemList
                         .stream()
-                        .map(l -> l.print(rebate))
+                        .map(LineItem::print)
                         .collect(Collectors.joining());
     }
 
-    public double tot() {
+    private BigDecimal total() {
         return lineItemList
                 .stream()
-                .mapToDouble(l -> l.totalAmountWithSale(rebate))
-                .sum();
+                .map(LineItem::totalAmount)
+                .reduce(BigDecimal.valueOf(0), BigDecimal::add)
+            .multiply(disCount);
     }
 
-    public double totSalesTx() {
-        return lineItemList
-                .stream()
-                .mapToDouble(l -> l.salesTax(rebate))
-                .sum();
+    public BigDecimal totalSalesTax() {
+        return total().multiply(BigDecimal.valueOf(.1));
     }
 
-    private double getRebate(LocalDate date) {
-        return isWednesday(date) ? 0.98 : 1;
+    private BigDecimal getDiscount(LocalDate date) {
+        return BigDecimal.valueOf(isWednesday(date) ? 0.98 : 1);
     }
 
     private boolean isWednesday(LocalDate date) {
-        return date.getDayOfWeek().getValue() == 3;
+        return date.getDayOfWeek() == DayOfWeek.WEDNESDAY;
+    }
+
+    public String showDate() {
+        return date.format(DateTimeFormatter.ofPattern("yyyy年MM月dd日, 星期")) + StringConstants.WEEK_DAYS[date.getDayOfWeek().getValue()];
+    }
+
+    public BigDecimal totalWithSalesTax() {
+        return total().add(totalSalesTax());
+    }
+
+    public BigDecimal showDiscountCost() {
+        return disCount.doubleValue() == 1
+                ? BigDecimal.ZERO
+                : total().multiply(BigDecimal.ONE.subtract(disCount));
     }
 }
