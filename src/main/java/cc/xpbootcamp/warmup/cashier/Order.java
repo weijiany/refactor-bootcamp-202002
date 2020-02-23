@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Order {
+    private final String[] WEEK_DAYS = new String[]{"", "一", "二", "三", "四", "五", "六", "日"};
+
     private List<LineItem> lineItemList;
     LocalDate date;
     private BigDecimal disCount;
@@ -46,7 +48,7 @@ public class Order {
     }
 
     public String showDate() {
-        return date.format(DateTimeFormatter.ofPattern("yyyy年MM月dd日, 星期")) + StringConstants.WEEK_DAYS[date.getDayOfWeek().getValue()];
+        return date.format(DateTimeFormatter.ofPattern("yyyy年MM月dd日, 星期")) + WEEK_DAYS[date.getDayOfWeek().getValue()];
     }
 
     public BigDecimal totalWithSalesTax() {
